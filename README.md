@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+<div align='center'>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1>Task Management System (React) </h1>
+</div>
 
-## Available Scripts
 
-In the project directory, you can run:
+## Project Setup
+#### 1. Install [React](https://reactjs.org/) App
+```bash
+npx create-react-app your-project-name
+```
 
-### `npm start`
+#### 2. [React Router](https://reactrouter.com/en/main)
+```bash
+npm install react-router-dom
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### 3. [React-Bootstrap](https://react-bootstrap.github.io/)
+  ```bash
+  npm install react-bootstrap bootstrap
+  ```
+  and then goto `src/index.js` and paste the bellow code.
+  ```bash
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  import 'bootstrap/dist/js/bootstrap.min.js';
+  ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## My Initial Setup
+- Create Main : `src\Layout\Main.js` and paste the code for make a layout
 
-### `npm run build`
+```bash
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const Main = () => {
+    return (
+        <div>
+            <Container>
+                <h1>Welcome To React</h1>
+            </Container>
+        </div>
+    );
+};
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export default Main;
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Create Route: `src\Routes\GeneralRoute.js`  and paste the code
+```bash
+import { createBrowserRouter } from "react-router-dom";
+import Main from "../Layout/Main";
 
-### `npm run eject`
+export const routes = createBrowserRouter([
+    {
+        path:'/',
+        element:<Main></Main>
+    }
+]);
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Update App.js : 
+```bash
+import './App.css';
+import { RouterProvider } from 'react-router-dom';
+import { routes } from './Routes/GeneralRoute';
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+function App() {
+  return (
+    <div className="App">
+        <RouterProvider router={routes}></RouterProvider>
+    </div>
+  );
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+export default App;
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- now run the react app, it will display like that -
+<img src="https://snipboard.io/eowuLd.jpg">
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## How to Run
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Please run these command - 
+```bash
+npm run start
+```
