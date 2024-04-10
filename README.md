@@ -17,7 +17,7 @@ npm install react-router-dom
 
 #### 3. [React-Bootstrap](https://react-bootstrap.github.io/)
   ```bash
-  npm install react-bootstrap bootstrap
+  npm install react-bootstrap bootstrap@4.6.0
   ```
   and then goto `src/index.js` and paste the bellow code.
   ```bash
