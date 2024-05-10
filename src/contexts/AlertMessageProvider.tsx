@@ -1,11 +1,12 @@
 import React, { ReactNode, createContext } from 'react';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 
 // Define the type for the context value
 interface AlertMessageContextType {
     successMessage: (message: string) => void;
     prepareMessage: (response: string) => string;
     displayErrorMessage: (htmlContent: string) => void;
+    isConfirmed: () => Promise<boolean>; // Adjust the return type to Promise<boolean>
 }
 
 // Create the context with the defined type
@@ -14,6 +15,7 @@ export const AlertMessageContext = createContext<AlertMessageContextType>({
     successMessage: () => {}, 
     prepareMessage: () => '',
     displayErrorMessage: () => {},
+    isConfirmed: async () => false,
 });
 
 // Define props type for AlertMessageProvider
@@ -61,6 +63,32 @@ const AlertMessageProvider: React.FC<AlertMessageProviderProps> = ({ children })
         })
     }
 
+    const isConfirmed = async ()  => {
+        const result: SweetAlertResult<any> = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        });
+        return result.isConfirmed; 
+
+        // const result: SweetAlertResult<any> = await Swal.fire({
+        //     Swal.fire({
+        //         title: 'Are you sure?',
+        //         text: "You won't be able to revert this!",
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#d33',
+        //         confirmButtonText: 'Yes, delete it!'
+        //     });
+        // });
+        
+    }
+
     let isErrorCodes = (errorCode:any) => {
         return laravelErrorCodes.some(error => error.code === errorCode);
     }
@@ -76,7 +104,8 @@ const AlertMessageProvider: React.FC<AlertMessageProviderProps> = ({ children })
     const alertInfo: AlertMessageContextType = {
         successMessage,
         prepareMessage,
-        displayErrorMessage
+        displayErrorMessage,
+        isConfirmed
     };
 
     return (

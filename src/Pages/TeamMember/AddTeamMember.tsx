@@ -1,16 +1,30 @@
 import React, { useContext, useState } from 'react';
 import { AlertMessageContext } from '../../contexts/AlertMessageProvider';
 
+interface Member {
+    id: number;
+    name: string;
+    email: string;
+    employee_id: string;
+    position: string;
+    password: string;
+    password_confirmation: string;
+}
 
-const AddTeamMember = () => {
+interface AddTeamMemberProps {
+    allMembers: Member[];
+    setMember: React.Dispatch<React.SetStateAction<Member[]>>;
+}
 
-    const [closeModal, setCloseModal]   = useState(false);
+const AddTeamMember: React.FC<AddTeamMemberProps> = ({ allMembers, setMember }) => {
+// const AddTeamMember = () => {
+
+    const [closeModal, setCloseModal] = useState(false);
 
     const {successMessage, prepareMessage, displayErrorMessage } = useContext(AlertMessageContext);
 
     const handleSubmit = async (event:any) => {
         event.preventDefault();
-
         const form = event.target;
         const name:string  = form.name.value;
         const email:string = form.email.value;
@@ -19,7 +33,8 @@ const AddTeamMember = () => {
         const password:string  = form.password.value;
         const password_confirmation:string  = form.password_confirmation.value;
 
-        const storeData = {
+        const newStoreData:Member = {
+            id: 0,
             name: name,
             email: email,
             employee_id: employee_id,
@@ -27,19 +42,21 @@ const AddTeamMember = () => {
             password: password,
             password_confirmation: password_confirmation,
         };
+        const updatedMembers = [...allMembers, newStoreData];
 
         fetch('http://127.0.0.1:8000/api/team-members', {
             method:'POST',
             headers:{
                 'content-type':'application/json'
             },
-            body: JSON.stringify(storeData)
+            body: JSON.stringify(newStoreData)
         })
         .then(res => res.json())
         .then(response =>{
             if (response.status === 200) {
                 form.reset();
-                setCloseModal(true);
+                setCloseModal(false);
+                setMember(updatedMembers);
                 successMessage(response.message);
             }
             else if (response.errors) {
@@ -56,8 +73,15 @@ const AddTeamMember = () => {
     return (
         <>
             {/* {!closeModal && ( */}
-                <div className={`modal fade${closeModal ? ' show' : ''}`} id="createModal" role="dialog" aria-labelledby="createModalLabel" aria-hidden={!closeModal}>
-                        <div className="modal-dialog modal-lg" role="document">
+                <div className="modal fade" 
+                    id="createModal"
+                    role="dialog"
+                    aria-labelledby="createModalLabel" 
+                    aria-hidden="true"
+                    style={closeModal ? { display: 'block' } : { display: 'none' }}
+                >
+                {/* <div className={`modal fade${closeModal ? ' show' : ''}`} id="createModal" role="dialog" aria-labelledby="createModalLabel" aria-hidden={!closeModal}> */}
+                    <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="createModalLabel"> Add Member</h5>

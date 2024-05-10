@@ -1,10 +1,59 @@
 import { Form, useLoaderData } from 'react-router-dom';
 import AddTeamMember from './AddTeamMember';
+import { useContext, useState } from 'react';
+import { AlertMessageContext } from '../../contexts/AlertMessageProvider';
+
+
+interface Member {
+    id: number;
+    name: string;
+    email: string;
+    employee_id: string;
+    position: string;
+    password: string;
+    password_confirmation: string;
+}
+
 
 const TeamMember = () => {
 
-    const { result } = useLoaderData() as { result: object };
-    // console.log(result);
+    const {successMessage, isConfirmed } = useContext(AlertMessageContext);
+
+    const { result } = useLoaderData() as { result: Member[] };
+    const [allMembers, setMember] = useState<Member[]>(result);
+
+    const handleDelete = (memberId: number):void => {
+        console.log(memberId);
+        isConfirmed()
+        .then(result => {   
+            if (result) {  
+                fetch(`http://127.0.0.1:8000/api/team-members/${memberId}`, {
+                    method: 'DELETE',
+                    headers:{
+                        'content-type':'application/json',
+                        // 'Authorization': `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(res.statusText);
+                    }
+                    return res.json();
+                })
+                .then(response => {
+                    if (response.status===200) {
+                        const remaining = allMembers.filter(member => member.id !== memberId);
+                        setMember(remaining);
+                        console.log(allMembers, remaining);
+                        successMessage(response.message);
+                    }
+                })
+                .catch(error => {
+                    // displayErrorMessage(422, 'Error', '<p>'+ error+'</p>');
+                });
+            }
+        });
+    }
 
     return (
         <div className="container-fluid">
@@ -28,16 +77,17 @@ const TeamMember = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {result && Array.isArray(result) && result.map(member => 
+                                {allMembers && Array.isArray(allMembers) && allMembers.map(member => 
                                         <tr key={member.id}>
                                             <td>{member.id}</td>
                                             <td>{member.name}</td>
-                                            <td>{member.employeeId}</td>
+                                            <td>{member.employee_id}</td>
                                             <td>{member.position}</td>
-                                            {/* <td>
-                                                <EditCategory key={category.id} categoryId={category.id} categoryName={category.name} setCategory={setCategory}></EditCategory>
-                                                <Button className='btn btn-danger' onClick={() => handleDelete(category.id)}>Delete</Button>
-                                            </td> */}
+                                            <td>
+                                                {/* <EditCategory key={category.id} categoryId={category.id} categoryName={category.name} setCategory={setCategory}></EditCategory> */}
+                                                
+                                                <button className='btn btn-danger' onClick={() => handleDelete(member.id)}>Delete</button>
+                                            </td>
                                         </tr>
                                     )
                                 }
@@ -48,7 +98,7 @@ const TeamMember = () => {
             </div>
 
             {/* Create Modal */}
-            <AddTeamMember/>
+            <AddTeamMember allMembers={allMembers} setMember={setMember}/>
 
         </div>
     );
