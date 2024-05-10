@@ -45,7 +45,7 @@ const Main = () => {
             </a>
 
             {/* <!-- Logout Modal--> */}
-            <div className="modal fade" id="logoutModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <div className="modal fade" id="logoutModal" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">

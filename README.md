@@ -24,6 +24,10 @@ npm install react-router-dom
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap/dist/js/bootstrap.min.js';
   ```
+#### 4. [Sweetalert2](https://sweetalert2.github.io/)
+  ```bash
+  npm install sweetalert2  
+  ```
 
 
 
@@ -82,13 +86,71 @@ export default App;
 
 
 
-
-
-
-
 ## How to Run
 
 Please run these command - 
 ```bash
 npm run start
 ```
+
+
+## STORE
+Please follow the code given below - 
+```ts
+    const handleSubmit = async (event:any) => {
+        event.preventDefault();
+
+        const form = event.target;
+        const name:string  = form.name.value;
+        const email:string = form.email.value;
+        const employee_id:string = form.employee_id.value;
+        const position:string  = form.position.value;
+        const password:string  = form.password.value;
+        const password_confirmation:string  = form.password_confirmation.value;
+
+        const storeData = {
+            name: name,
+            email: email,
+            employee_id: employee_id,
+            position: position,
+            password: password,
+            password_confirmation: password_confirmation,
+        };
+
+        fetch('http://127.0.0.1:8000/api/team-members', {
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body: JSON.stringify(storeData)
+        })
+        .then(res => res.json())
+        .then(data =>{
+             console.log(data);
+        })
+        .catch(err => console.error(err));
+    }
+```
+
+
+
+
+
+
+## POSTMAN
+- Fetch All Data: To display team-members data using POSTMAN
+<img src="https://snipboard.io/ECLN9n.jpg">
+
+
+- Store Data (1): Display Validation error in POSTMAN. But before, 
+Just add `accept` : `application/json` into your headers in postman or whatever you are using for API testing purposes.
+<img src="https://snipboard.io/XeQnUj.jpg">
+
+- Store Data (2): Use key-value in `x-www.form-urlencoded` and input data in the form in POSTMAN. 
+<img src="https://snipboard.io/qEmlM1.jpg">
+
+
+## TOPIC 
+- useLoaderData
+- useState
+- createContext

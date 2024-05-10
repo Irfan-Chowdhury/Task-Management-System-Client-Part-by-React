@@ -1,17 +1,16 @@
-import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData } from 'react-router-dom';
+import AddTeamMember from './AddTeamMember';
 
 const TeamMember = () => {
 
-    const {result} = useLoaderData();
-    // console.log(members);
+    const { result } = useLoaderData() as { result: object };
+    // console.log(result);
 
     return (
         <div className="container-fluid">
             {/* <!-- Page Heading --> */}
             <h1 className="h3 mb-2 text-gray-800">Team Members</h1>
             
-            {/* <!-- DataTales Example --> */}
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
                     <button className="btn btn-primary font-weight-bold" type="button" data-toggle="modal" data-target="#createModal"><i className="fa fa-plus"></i> Create Member</button>
@@ -29,8 +28,7 @@ const TeamMember = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    result.map(member => 
+                                {result && Array.isArray(result) && result.map(member => 
                                         <tr key={member.id}>
                                             <td>{member.id}</td>
                                             <td>{member.name}</td>
@@ -48,6 +46,10 @@ const TeamMember = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Create Modal */}
+            <AddTeamMember/>
+
         </div>
     );
 };
