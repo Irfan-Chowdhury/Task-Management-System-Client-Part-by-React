@@ -2,6 +2,7 @@ import { Form, useLoaderData } from 'react-router-dom';
 import AddTeamMember from './AddTeamMember';
 import { useContext, useState } from 'react';
 import { AlertMessageContext } from '../../contexts/AlertMessageProvider';
+import EditTeamMember from './EditTeamMember';
 
 
 interface Member {
@@ -84,8 +85,7 @@ const TeamMember = () => {
                                             <td>{member.employee_id}</td>
                                             <td>{member.position}</td>
                                             <td>
-                                                {/* <EditCategory key={category.id} categoryId={category.id} categoryName={category.name} setCategory={setCategory}></EditCategory> */}
-                                                
+                                                <EditTeamMember key={member.id} allMembers={allMembers} setMember={setMember} member={member}></EditTeamMember>
                                                 <button className='btn btn-danger' onClick={() => handleDelete(member.id)}>Delete</button>
                                             </td>
                                         </tr>
@@ -99,7 +99,6 @@ const TeamMember = () => {
 
             {/* Create Modal */}
             <AddTeamMember allMembers={allMembers} setMember={setMember}/>
-
         </div>
     );
 };

@@ -34,7 +34,7 @@ const AddTeamMember: React.FC<AddTeamMemberProps> = ({ allMembers, setMember }) 
         const password_confirmation:string  = form.password_confirmation.value;
 
         const newStoreData:Member = {
-            id: 0,
+            id: 0, // it'll not any effect
             name: name,
             email: email,
             employee_id: employee_id,

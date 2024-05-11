@@ -133,24 +133,59 @@ Please follow the code given below -
 ```
 
 
-
-
-
-
-## POSTMAN
-- Fetch All Data: To display team-members data using POSTMAN
-<img src="https://snipboard.io/ECLN9n.jpg">
-
-
-- Store Data (1): Display Validation error in POSTMAN. But before, 
-Just add `accept` : `application/json` into your headers in postman or whatever you are using for API testing purposes.
-<img src="https://snipboard.io/XeQnUj.jpg">
-
-- Store Data (2): Use key-value in `x-www.form-urlencoded` and input data in the form in POSTMAN. 
-<img src="https://snipboard.io/qEmlM1.jpg">
-
-
 ## TOPIC 
 - useLoaderData
 - useState
 - createContext
+
+
+## ChatGPT 
+https://chatgpt.com/c/92acdd50-9420-4190-90cc-60ceb124690d
+
+
+## Common Error
+
+- Problem-1
+<img src="https://snipboard.io/o7taEk.jpg">
+<img src="https://snipboard.io/vty4gK.jpg">
+
+Solution : 
+<img src="https://snipboard.io/PGA1uB.jpg">
+
+- Problem-2
+<img src="https://snipboard.io/wx7EFf.jpg">
+
+The error occurs because the `setMember` function expects an array of `Member` objects, but you're providing a single `Member` object instead.
+To resolve this, you need to update the `setMember` call to provide an array of `Member` objects, including the updated member data. You can achieve this by mapping over the existing `allMembers` array, updating the relevant member, and then passing the updated array to `setMember`.
+
+Solution : 
+```bash
+        const updatedMember:Member = {
+            id: member_id,
+            name: name,
+            email: email,
+            employee_id: employee_id,
+            position: position,
+            password: password,
+            password_confirmation: password_confirmation,
+        };
+
+        .then(response =>{
+            if (response.status === 200) {
+                setCloseModal(false);
+                successMessage(response.message);
+
+                // Update the member in the allMembers array
+                const updatedMembers = allMembers.map(member => {
+                    if (member.id === member_id) {
+                        return updatedMember; // Replace the existing member with the updated one
+                    } else {
+                        return member;
+                    }
+                });
+                setMember(updatedMembers); // Set the updated array of members
+
+            }
+        })
+
+```
